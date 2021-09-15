@@ -1,0 +1,9 @@
+{% block body %}
+        {% if not app.user %}
+        <p>Veuillez vous connecter pour voir le contenu</p>
+        {% else %}
+<form method="post" action="{{ path('documents_delete', {'id': document.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
+    <button class="btn">Delete</button>
+</form>
+{% endif %}
