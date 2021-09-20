@@ -46,7 +46,7 @@ class Documents
     }
     public function getContent(): array
     {
-        return $this->content;
+         return $this->content;
     }
 
     public function setContent(string $content): self
