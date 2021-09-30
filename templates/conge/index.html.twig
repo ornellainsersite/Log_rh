@@ -12,8 +12,13 @@
 {% endblock %}
 
 {% block body %}
-    <div id="calendrier">
-    </div>
+{% if app.user %}
+    <div id="calendrier"></div>
+    <a href="{{ path('calendar_index') }}">Poser des congés</a>
+    {% endif %}
+    {% if not app.user %}
+    <h1>Veuillez vous connecter pour accéder à ce contenu</h1>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

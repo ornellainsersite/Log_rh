@@ -3,6 +3,7 @@
 {% block title %}Calendar index{% endblock %}
 
 {% block body %}
+{% if app.user %}
     <h1>Calendar index</h1>
 
     <table class="table">
@@ -36,6 +37,11 @@
         {% endfor %}
         </tbody>
     </table>
-
     <a href="{{ path('calendar_new') }}">Create new</a>
+    {% endif %}
+    {% if not app.user %}
+    <h1>Veuillez vous connecter pour accéder à ce contenu</h1>
+    {% endif %}
+
+
 {% endblock %}

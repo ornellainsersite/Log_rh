@@ -10,9 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+
 #[Route('/calendar')]
 class CalendarController extends AbstractController
 {
+
     #[Route('/', name: 'calendar_index', methods: ['GET'])]
     public function index(CalendarRepository $calendarRepository): Response
     {
@@ -32,6 +35,7 @@ class CalendarController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($calendar);
             $entityManager->flush();
+            
 
             return $this->redirectToRoute('calendar_index', [], Response::HTTP_SEE_OTHER);
         }
