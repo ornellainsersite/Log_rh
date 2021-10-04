@@ -4,6 +4,7 @@
         {{ form_widget(form.title) }}
         {{ form_label(form.content) }}
         {{ form_widget(form.content) }}
+        
         {{ form_rest(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}

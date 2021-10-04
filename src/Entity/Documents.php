@@ -15,7 +15,6 @@ class Documents
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    
     private $id;
 
     /**
@@ -27,6 +26,11 @@ class Documents
      * @ORM\Column(type="json")
      */
     private $content = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $docFilename;
 
 
     public function getId(): ?int
@@ -55,4 +59,16 @@ class Documents
 
         return $this;
     }
+
+    public function getDocFilename()
+    {
+        return $this->docFilename;
+    }
+     
+    public function setDocFilename($docFilename)
+    {
+        $this->docFilename = $docFilename;
+        return $this;
+    }
+
 }

@@ -8,15 +8,19 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+           <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+              <script src="//code.jquery.com/jquery.js"></script>
+                <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    
         {% endblock %}
+        {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     </head>
     <body>
         {% block body %}
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-bg {{ app.session.flashbag.peek('success')|length > 0 ? '' : 'mb-5' }}">
         {% if app.user %}
             <header>
                 <div class="banniere">

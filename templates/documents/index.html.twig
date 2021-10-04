@@ -21,6 +21,7 @@
             <tr>
                 <td>{{ document.id }}</td>
                 <td>{{ document.title }}</td>
+                <td>{{ document.docFilename }}</td>
                 <td>
                     <a href="{{ path('documents_show', {'id': document.id}) }}">show</a>
                     <a href="{{ path('documents_edit', {'id': document.id}) }}">edit</a>

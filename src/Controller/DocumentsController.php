@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\Documents;
 use App\Form\DocumentsType;
 use App\Repository\DocumentsRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\FileUploader;
+
+
 
 #[Route('/documents')]
 class DocumentsController extends AbstractController
@@ -20,27 +23,94 @@ class DocumentsController extends AbstractController
             'documents' => $documentsRepository->findAll(),
         ]);
     }
+    
+
+
 
     #[Route('/new', name: 'documents_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
-        $document = new Documents();
-        $form = $this->createForm(DocumentsType::class, $document);
+        $documents = new Documents();
+        $form = $this->createForm(DocumentsType::class, $documents);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $documents */
+            $content = $form->get('content')->getData();
+            if ($content) {
+                $docFilename = $fileUploader->upload($content);
+                $documents->setdocFilename($docFilename);
+            }
+    
+            // ...
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($document);
+            $entityManager->persist($documents);
             $entityManager->flush();
 
             return $this->redirectToRoute('documents_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        
         return $this->renderForm('documents/new.html.twig', [
-            'document' => $document,
+            'document' => $documents,
             'form' => $form,
         ]);
     }
+
+//     #[Route('/new', name: 'documents_new', methods: ['GET', 'POST'])]
+// public function new(Request $request, SluggerInterface $slugger)
+//     {
+//         $documents = new Documents();
+//         $form = $this->createForm(DocumentsType::class, $documents);
+//         $form->handleRequest($request);
+
+//         if ($form->isSubmitted() && $form->isValid()) {
+//             /** @var UploadedFile $documentsFile */
+//             $documentsFile = $form->get('documents')->getViewData();
+
+//             // this condition is needed because the 'brochure' field is not required
+//             // so the PDF file must be processed only when a file is uploaded
+//             if ($documentsFile) {
+//                 $originalFilename = pathinfo($documentsFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                 // this is needed to safely include the file name as part of the URL
+//                 $safeFilename = $slugger->slug($originalFilename);
+//                 $newFilename = $safeFilename.'-'.uniqid().'.'.$documentsFile->guessExtension();
+
+//                 // Move the file to the directory where brochures are stored
+//                 try {
+//                     $documentsFile->move(
+//                         $this->getParameter('documents_directory'),
+//                         $newFilename
+//                     );
+//                 } catch (FileException $e) {
+//                     // ... handle exception if something happens during file upload
+//                 }
+
+//                 // updates the 'documentsFile' property to store the PDF file name
+//                 // instead of its contents
+//                 $documents->setDocFilename($newFilename);
+//             }
+
+//             // ... persist the $product variable or any other work
+
+//             return $this->redirectToRoute('document_index');
+//         }
+
+//         return $this->renderForm('documents/new.html.twig', [
+//             'form' => $form,
+//         ]);
+//     }
+
+
+
+
+
+
+
+
+
 
     #[Route('/{id}', name: 'documents_show', methods: ['GET'])]
     public function show(Documents $document): Response
@@ -79,4 +149,6 @@ class DocumentsController extends AbstractController
 
         return $this->redirectToRoute('documents_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
 }
