@@ -40,6 +40,7 @@ class DocumentsController extends AbstractController
             if ($content) {
                 $docFilename = $fileUploader->upload($content);
                 $documents->setdocFilename($docFilename);
+                
             }
     
             // ...

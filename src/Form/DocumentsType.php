@@ -23,7 +23,7 @@ class DocumentsType extends AbstractType
                 'required' => false,
                 'constraints' =>  [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '3000k',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
@@ -33,7 +33,7 @@ class DocumentsType extends AbstractType
                     ],
             ])
             ;
-    }
+    ;}
 
     public function configureOptions(OptionsResolver $resolver)
     {

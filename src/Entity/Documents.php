@@ -23,9 +23,9 @@ class Documents
     private $title;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $content = [];
+    private $content;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,7 +48,7 @@ class Documents
 
         return $this;
     }
-    public function getContent(): array
+    public function getContent()
     {
          return $this->content;
     }
